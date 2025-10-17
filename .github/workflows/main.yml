@@ -1,0 +1,25 @@
+    name: Run Tests and Report to Xray
+    on:
+      push:
+        branches:
+          - main
+    jobs:
+      test:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - name: Set up Python
+            uses: actions/setup-python@v5
+            with:
+              python-version: '3.x'
+          - name: Install dependencies
+            run: pip install pytest pytest-jira-xray
+          - name: Run tests and generate Xray XML
+            run: pytest --junitxml=results.xml --cloud # --cloud is essential for Xray Cloud
+          - name: Upload results to Xray
+            uses: mikepenz/xray-action@v1.2.0 # Or use curl with Xray REST API
+            with:
+              client-id: ${{ secrets.XRAY_CLIENT_ID }}
+              client-secret: ${{ secrets.XRAY_CLIENT_SECRET }}
+              file: results.xml
+              test-execution-issue-key: XRAYDEMO-98 # Optional, if you want to report to a specific Test Execution
