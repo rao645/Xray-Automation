@@ -17,7 +17,7 @@
           - name: Run tests and generate Xray XML
             run: pytest --junitxml=results.xml --cloud # --cloud is essential for Xray Cloud
           - name: Upload results to Xray
-            uses: mikepenz/xray-action@v1.2.0 # Or use curl with Xray REST API
+            uses: mikepenz/xray-action@v1.3.0 # Or use curl with Xray REST API
             with:
               client-id: ${{ secrets.XRAY_CLIENT_ID }}
               client-secret: ${{ secrets.XRAY_CLIENT_SECRET }}
